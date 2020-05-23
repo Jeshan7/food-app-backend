@@ -3,15 +3,26 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
-mongoose.connect("mongodb://localhost/app-db");
+const userRoutes = require('../routes/users');
+
+mongoose.connect("mongodb://localhost/app-db", { useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use('/api/users', userRoutes)
+
 app.use((req, res, next) => {
-  res.status(200).json({
-    message: "Node started",
-  });
-});
+    const error = new Error("Not Found");
+    error.status = 404;
+    next(error)
+})
+
+app.use((error, req, res,next) => {
+    res.status(error.status || 500);
+    res.json({
+        Error: error.message
+    })
+})
 
 module.exports = app;
