@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const AuthService = require("../services/auth");
 
 exports.fetch_all_users = async (req, res, next) => {
-  console.log("as", req,currentUser);
   const users = await AuthService.getAllUsers();
+  console.log("dds", users)
   res.status(200).json({
     users: users.map((user) => {
       return { name: user.name, email: user.email };

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 const userRoutes = require('../routes/users');
+const restaurantRoutes = require('../routes/restaurants');
 
 mongoose.connect("mongodb://localhost/app-db", { useNewUrlParser: true });
 
@@ -11,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes)
+app.use('/api/restaurants', restaurantRoutes)
 
 app.use((req, res, next) => {
     const error = new Error("Not Found");
