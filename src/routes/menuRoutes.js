@@ -6,4 +6,6 @@ router.get("/", MenuController.fetch_all_menus);
 
 router.post("/", MenuController.add_menu);
 
+router.delete("/:menu_id", MenuController.delete_menu);
+
 module.exports = router;

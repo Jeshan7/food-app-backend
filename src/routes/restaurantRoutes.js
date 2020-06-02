@@ -3,7 +3,7 @@ const router = express.Router();
 const RestaurantController = require("../controllers/RestaurantController");
 const checkAuth = require("../middlewares/checkAuth");
 
-router.get("/", RestaurantController.fetch_all_restaurants);
+router.get("/", checkAuth, RestaurantController.fetch_all_restaurants);
 
 router.post("/add", checkAuth, RestaurantController.add_restaurant);
 

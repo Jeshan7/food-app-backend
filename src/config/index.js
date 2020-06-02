@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const userRoutes = require("../routes/usersRoutes");
 const restaurantRoutes = require("../routes/restaurantRoutes");
 const menuRoutes = require("../routes/menuRoutes");
+const foodItemsRoutes = require("../routes/foodItemRoutes");
 
 mongoose.connect("mongodb://localhost/app-db", { useNewUrlParser: true });
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/menu", menuRoutes);
+app.use("/api/fooditems", foodItemsRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");

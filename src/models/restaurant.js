@@ -14,6 +14,7 @@ const restaurantSchema = new Schema({
   menu_id: {
     type: Schema.Types.ObjectId,
     ref: "Menu",
+    default: null
   },
 });
 

@@ -47,7 +47,6 @@ exports.add_restaurant = async (req, res, next) => {
 
 exports.delete_restaurant = async (req, res, next) => {
   try {
-    console.log("sas", req.params.id);
     const status = await RestaurantService.delete(req.params.rest_id);
     if (status) {
       res.status(200).json({
