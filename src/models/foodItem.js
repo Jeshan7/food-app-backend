@@ -16,7 +16,7 @@ const menuSchema = new Schema({
     require: true,
   },
   unit_price: {
-    type: String,
+    type: Number,
     require: true,
   },
   menu_id: {

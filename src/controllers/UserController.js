@@ -3,10 +3,22 @@ const AuthService = require("../services/auth");
 
 exports.fetch_all_users = async (req, res, next) => {
   const users = await AuthService.getAllUsers();
-  console.log("dds", users)
+  console.log("dds", users);
   res.status(200).json({
     users: users.map((user) => {
-      return { name: user.name, email: user.email };
+      return {
+        name: user.name,
+        email: user.email,
+        orders: user.orders.map((doc) => {
+          return {
+            _id: doc._id,
+            user_id: doc.user_id,
+            restaurant_id: doc.restaurant_id,
+            total_price: doc.total_price,
+            foodItems: doc.foodItems,
+          };
+        }),
+      };
     }),
   });
 };
@@ -24,18 +36,13 @@ exports.add_new_user = async (req, res, next) => {
       });
     } else {
       try {
-        const newUser = {
-          name: req.body.name,
-          email: req.body.email,
-          password: req.body.password,
-        };
-        const user = await AuthService.create(newUser);
-
+        const user = await AuthService.create(req.body);
         res.status(200).json({
           message: "User created",
           user: {
             name: user.name,
             email: user.email,
+            orders: user.orders,
           },
         });
       } catch (err) {

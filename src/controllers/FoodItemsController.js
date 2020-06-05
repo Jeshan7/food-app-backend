@@ -14,6 +14,7 @@ exports.fetch_all_fooditems = async (req, res, next) => {
             quantity: doc.quantity,
             category: doc.category,
             menu_id: doc.menu_id,
+            unit_price: doc.unit_price,
           };
         }),
       });
@@ -31,13 +32,7 @@ exports.fetch_all_fooditems = async (req, res, next) => {
 
 exports.add_foodItem = async (req, res, next) => {
   try {
-    const newFoodItem = {
-      name: req.body.name,
-      menu_id: req.body.menu_id,
-      unit_price: req.body.name,
-      category: req.body.category,
-    };
-    const foodItem = await FoodItemService.add(newFoodItem);
+    const foodItem = await FoodItemService.add(req.body);
     res.status(200).json({
       message: "food item added successfully",
       foodItem: {
@@ -46,6 +41,7 @@ exports.add_foodItem = async (req, res, next) => {
         quantity: foodItem.quantity,
         category: foodItem.category,
         menu_id: foodItem.menu_id,
+        unit_price: foodItem.unit_price,
       },
     });
   } catch (error) {

@@ -51,9 +51,9 @@ exports.authenticate = async (user) => {
 };
 
 exports.getAllUsers = async () => {
-  const users = await User.find({});
-  return users;  
-}
+  const users = await User.find().populate("orders");
+  return users;
+};
 // exports.remove = async (id) => {
 //   // console.log(id)
 //   const user = User.findByIdAndDelete({ _id: id });

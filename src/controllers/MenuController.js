@@ -4,14 +4,23 @@ const MenuService = require("../services/menuService");
 exports.fetch_all_menus = async (req, res, next) => {
   try {
     const menuList = await MenuService.get_all();
-    if (menuList.length > 1) {
+    if (menuList.length > 0) {
       res.status(200).json({
         message: "fetched successfully",
         menuList: menuList.map((doc) => {
           return {
             _id: doc._id,
             restaurant_id: doc.restaurant_id,
-            foodItems: doc.foodItems,
+            foodItems: doc.foodItems.map((doc) => {
+              return {
+                _id: doc._id,
+                name: doc.name,
+                quantity: doc.quantity,
+                category: doc.category,
+                menu_id: doc.menu_id,
+                unit_price: doc.unit_price,
+              };
+            }),
           };
         }),
       });
