@@ -1,5 +1,6 @@
 const express = require("express");
 const RestaurantService = require("../services/restaurant");
+const Restaurant = require("../models/restaurant");
 
 exports.fetch_all_restaurants = async (req, res, next) => {
   try {
@@ -10,8 +11,9 @@ exports.fetch_all_restaurants = async (req, res, next) => {
         return {
           _id: doc._id,
           name: doc.name,
-          location: doc.location,
+          locations: doc.locations,
           menu_id: doc.menu_id,
+          ratings: doc.ratings,
         };
       }),
     });
@@ -26,7 +28,8 @@ exports.add_restaurant = async (req, res, next) => {
   try {
     const newRestaurant = {
       name: req.body.name,
-      location: req.body.location,
+      locations: req.body.locations,
+      ratings: req.body.ratings,
     };
     const restaurantData = await RestaurantService.create(newRestaurant);
     res.status(200).json({
@@ -34,8 +37,9 @@ exports.add_restaurant = async (req, res, next) => {
       restaurant: {
         _id: restaurantData._id,
         name: restaurantData.name,
-        location: restaurantData.location,
+        locations: restaurantData.locations,
         menu_id: restaurantData.menu_id,
+        ratings: restaurantData.ratings,
       },
     });
   } catch (e) {
@@ -58,6 +62,59 @@ exports.delete_restaurant = async (req, res, next) => {
         message: "Not found",
       });
     }
+  } catch (error) {
+    res.status(500).json({
+      Error: error.message,
+    });
+  }
+};
+
+exports.fetch_restaurants = (req, res, next) => {
+  console.log("sasasd", req.body);
+  try {
+    Restaurant.search(
+      {
+        bool: {
+          must: {
+            match: {
+              name: {
+                query: req.body.name,
+              },
+            },
+          },
+          filter: {
+            match: {
+              locations: req.body.location,
+            },
+          },
+        },
+      },
+      {
+        hydrate: true,
+      },
+      (error, result) => {
+        console.log("Result", result.hits.hits);
+        console.log("sasdd", error);
+
+        // if (result.hits.hits.length && result.hits.hits.length > 0) {
+        //   res.status(200).json({
+        //     restaurants: result.hits.hits.map((doc) => {
+        //       return {
+        //         _id: doc._id,
+        //         name: doc.name,
+        //         locations: doc.locations,
+        //         menu_id: doc.menu_id,
+        //         ratings: doc.ratings,
+        //       };
+        //     }),
+        //   });
+        // } else {
+        //   res.status(500).json({
+        //     Error: "No restaurant found",
+        //   });
+        // }
+      }
+    );
   } catch (error) {
     res.status(500).json({
       Error: error.message,

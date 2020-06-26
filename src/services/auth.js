@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
+const util = require("util");
 
 exports.create = async (user) => {
   try {
@@ -54,6 +55,45 @@ exports.getAllUsers = async () => {
   const users = await User.find().populate("orders");
   return users;
 };
+
+exports.search_users = async () => {
+  try {
+    return await User.search(
+      {
+        query_string: {
+          query: "jak",
+        },
+      },
+      {
+        hydrate: true,
+        hydrateWithESResults: true,
+        hydrateOptions: { select: "name" },
+      },
+      (err, result) => {
+        console.log(result.hits.hits);
+        result.hits.hits.map((data) => {
+          console.log("saaas", data);
+        });
+      }
+    );
+    // const asyncFunction = util.promisify(voidFunction);
+    // const results = await User.search(
+    //   {
+    //     query_string: {
+    //       query: "jak",
+    //     },
+    //   }
+    // { hydrate: false, hydrateOptions: { lean: true } }
+    // );
+    // console.log("saadads", results);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+  // return result;
+
+  // );
+};
+
 // exports.remove = async (id) => {
 //   // console.log(id)
 //   const user = User.findByIdAndDelete({ _id: id });

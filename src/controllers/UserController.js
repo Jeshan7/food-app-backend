@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const AuthService = require("../services/auth");
+const User = require("../models/user");
 
 exports.fetch_all_users = async (req, res, next) => {
   const users = await AuthService.getAllUsers();
-  console.log("dds", users);
   res.status(200).json({
     users: users.map((user) => {
       return {
@@ -24,6 +24,7 @@ exports.fetch_all_users = async (req, res, next) => {
 };
 
 exports.add_new_user = async (req, res, next) => {
+  console.log("dd", req.body);
   if (
     req.body.name &&
     req.body.email &&
@@ -93,3 +94,46 @@ exports.login_user = async (req, res, next) => {
 //     });
 //   }
 // };
+
+exports.search_query = (req, res, next) => {
+  res.redirect("/search?q=" + req.body.q);
+};
+
+exports.searchUsers = async (req, res, next) => {
+  try {
+    User.search(
+      {
+        query_string: {
+          query: req.query.q,
+        },
+      },
+      {
+        hydrate: true,
+        // hydrateWithESResults: true,
+        // hydrateOptions: { select: "name" },
+      },
+      (err, result) => {
+        if (result.hits.hits.length > 0) {
+          res.status(200).json({
+            data: result.hits.hits.map((doc) => {
+              return {
+                _id: doc._id,
+                name: doc.name,
+                email: doc.email,
+                orders: doc.orders,
+              };
+            }),
+          });
+        } else {
+          res.status(500).json({
+            Error: "No data found",
+          });
+        }
+      }
+    );
+  } catch (error) {
+    res.status(500).json({
+      Error: error.message,
+    });
+  }
+};

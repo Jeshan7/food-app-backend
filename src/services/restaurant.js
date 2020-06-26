@@ -6,7 +6,8 @@ exports.create = async (restaurant) => {
     const newRestaurant = new Restaurant({
       _id: new mongoose.Types.ObjectId(),
       name: restaurant.name,
-      location: restaurant.location,
+      locations: restaurant.locations,
+      ratings: restaurant.ratings,
     });
     const data = await newRestaurant.save();
     return data;

@@ -10,5 +10,8 @@ router.post("/sign-up", UserController.add_new_user);
 router.post("/sign-in", UserController.login_user);
 
 // router.delete("/:userId", UserController.delete_user);
+router.post("/search", UserController.search_query);
+
+router.get("/search", UserController.searchUsers);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-
+const cors = require("cors");
 const userRoutes = require("../routes/usersRoutes");
 const restaurantRoutes = require("../routes/restaurantRoutes");
 const menuRoutes = require("../routes/menuRoutes");
@@ -11,6 +11,7 @@ const orderRoutes = require("../routes/orderRoutes");
 
 mongoose.connect("mongodb://localhost/app-db", { useNewUrlParser: true });
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
