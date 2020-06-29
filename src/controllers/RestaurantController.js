@@ -31,9 +31,12 @@ exports.add_restaurant = async (req, res, next) => {
       locations: req.body.locations,
       ratings: req.body.ratings,
     };
-    const restaurantData = await RestaurantService.create(newRestaurant);
+    const { restaurantData, es_message } = await RestaurantService.create(
+      newRestaurant
+    );
     res.status(200).json({
       message: "restaurant added successfully",
+      es_message,
       restaurant: {
         _id: restaurantData._id,
         name: restaurantData.name,
@@ -69,52 +72,27 @@ exports.delete_restaurant = async (req, res, next) => {
   }
 };
 
-exports.fetch_restaurants = (req, res, next) => {
-  console.log("sasasd", req.body);
+exports.fetch_suggestions = async (req, res, next) => {
   try {
-    Restaurant.search(
-      {
-        bool: {
-          must: {
-            match: {
-              name: {
-                query: req.body.name,
-              },
-            },
-          },
-          filter: {
-            match: {
-              locations: req.body.location,
-            },
-          },
-        },
-      },
-      {
-        hydrate: true,
-      },
-      (error, result) => {
-        console.log("Result", result.hits.hits);
-        console.log("sasdd", error);
+    const data = await RestaurantService.query_suggestions(req.body);
+    res.status(200).json({
+      message: "fetched successfully",
+      data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      Error: error.message,
+    });
+  }
+};
 
-        // if (result.hits.hits.length && result.hits.hits.length > 0) {
-        //   res.status(200).json({
-        //     restaurants: result.hits.hits.map((doc) => {
-        //       return {
-        //         _id: doc._id,
-        //         name: doc.name,
-        //         locations: doc.locations,
-        //         menu_id: doc.menu_id,
-        //         ratings: doc.ratings,
-        //       };
-        //     }),
-        //   });
-        // } else {
-        //   res.status(500).json({
-        //     Error: "No restaurant found",
-        //   });
-        // }
-      }
-    );
+exports.fetch_restaurants = async (req, res, next) => {
+  try {
+    const restaurant = await RestaurantService.query_restaurants(req.query.q);
+    res.status(200).json({
+      message: "fetched successfully",
+      restaurant,
+    });
   } catch (error) {
     res.status(500).json({
       Error: error.message,

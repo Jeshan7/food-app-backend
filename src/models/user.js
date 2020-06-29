@@ -27,11 +27,11 @@ const userSchema = new Schema({
   ],
 });
 
-userSchema.plugin(mongoosastic, {
-  host: "localhost",
-  port: 9200,
-});
+// userSchema.plugin(mongoosastic, {
+//   host: "localhost",
+//   port: 9200,
+// });
 
 const User = mongoose.model("User", userSchema);
-es.createStream(User);
+// es.createStream(User);
 module.exports = User;

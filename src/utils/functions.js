@@ -1,20 +1,39 @@
-exports.createStream = (model) => {
-  model.createMapping((err, mapping) => {
-    console.log("Mapping crested");
-  });
+const es = require("../config/elasticsearch");
 
-  const stream = model.synchronize();
-  let count = 0;
-
-  stream.on("data", () => {
-    count++;
-  });
-
-  stream.on("close", () => {
-    console.log(`Indexed documents - ${count}`);
-  });
-
-  stream.on("error", () => {
-    console.log("ES error");
-  });
+exports.createStream = async () => {
+  try {
+    const { body } = await es.indices.exists({
+      index: "restaurants",
+    });
+    if (!body) {
+      const x = await es.indices.create({
+        index: "restaurants",
+        body: {
+          mappings: {
+            dynamic: false,
+            properties: {
+              restaurant_id: {
+                type: "keyword",
+              },
+              name: {
+                type: "text",
+              },
+              locations: {
+                type: "keyword",
+              },
+              search_name: {
+                type: "completion",
+              },
+              ratings: {
+                type: "long",
+              },
+            },
+          },
+        },
+      });
+    }
+    console.log("Mapping created");
+  } catch (err) {
+    console.log("Error", err);
+  }
 };
