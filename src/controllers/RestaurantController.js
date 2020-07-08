@@ -12,8 +12,10 @@ exports.fetch_all_restaurants = async (req, res, next) => {
           _id: doc._id,
           name: doc.name,
           locations: doc.locations,
+          description: doc.description,
           menu_id: doc.menu_id,
           ratings: doc.ratings,
+          cost_for_two: doc.cost_for_two,
         };
       }),
     });
@@ -26,13 +28,8 @@ exports.fetch_all_restaurants = async (req, res, next) => {
 
 exports.add_restaurant = async (req, res, next) => {
   try {
-    const newRestaurant = {
-      name: req.body.name,
-      locations: req.body.locations,
-      ratings: req.body.ratings,
-    };
     const { restaurantData, es_message } = await RestaurantService.create(
-      newRestaurant
+      req.body
     );
     res.status(200).json({
       message: "restaurant added successfully",
@@ -43,6 +40,8 @@ exports.add_restaurant = async (req, res, next) => {
         locations: restaurantData.locations,
         menu_id: restaurantData.menu_id,
         ratings: restaurantData.ratings,
+        description: restaurantData.description,
+        cost_for_two: restaurantData.cost_for_two,
       },
     });
   } catch (e) {
@@ -65,34 +64,6 @@ exports.delete_restaurant = async (req, res, next) => {
         message: "Not found",
       });
     }
-  } catch (error) {
-    res.status(500).json({
-      Error: error.message,
-    });
-  }
-};
-
-exports.fetch_suggestions = async (req, res, next) => {
-  try {
-    const data = await RestaurantService.query_suggestions(req.body);
-    res.status(200).json({
-      message: "fetched successfully",
-      data,
-    });
-  } catch (error) {
-    res.status(500).json({
-      Error: error.message,
-    });
-  }
-};
-
-exports.fetch_restaurants = async (req, res, next) => {
-  try {
-    const restaurant = await RestaurantService.query_restaurants(req.query.q);
-    res.status(200).json({
-      message: "fetched successfully",
-      restaurant,
-    });
   } catch (error) {
     res.status(500).json({
       Error: error.message,

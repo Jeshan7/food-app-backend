@@ -9,9 +9,9 @@ router.post("/add", RestaurantController.add_restaurant);
 
 router.delete("/:id", RestaurantController.delete_restaurant);
 
-router.post("/suggestions", RestaurantController.fetch_suggestions);
+// router.post("/suggestions", RestaurantController.fetch_suggestions);
 
-router.post("/search", RestaurantController.fetch_restaurants);
+// router.get("/search", RestaurantController.fetch_restaurants);
 // router.get("/search", RestaurantController.search_restaurants);
 
 module.exports = router;

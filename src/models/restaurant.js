@@ -10,18 +10,24 @@ const restaurantSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    es_indexed: true,
   },
   locations: {
     type: [String],
     required: true,
-    es_indexed: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  cost_for_two: {
+    type: Number,
+    required: true,
+    default: 100,
   },
   ratings: {
     type: Number,
     required: true,
     default: 4.5,
-    es_indexed: true,
   },
   menu_id: {
     type: Schema.Types.ObjectId,

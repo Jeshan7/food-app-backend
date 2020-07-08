@@ -14,6 +14,18 @@ exports.create = async (user) => {
       password: hash,
     });
     const userDetails = await newUser.save();
+    // if (userDetails) {
+    //   const userPassword = await argon2.verify(
+    //     userData.password,
+    //     user.password
+    //   );
+    //   if (userPassword) {
+    //     const token = await jwt.sign(
+    //       { email: userData.email, password: userData.password },
+    //       process.env.JWT_SECRET_KEY
+    //     );
+    //   }
+    // }
     return userDetails;
   } catch (e) {
     throw new Error(e);

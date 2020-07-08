@@ -6,7 +6,7 @@ exports.createStream = async () => {
       index: "restaurants",
     });
     if (!body) {
-      const x = await es.indices.create({
+      await es.indices.create({
         index: "restaurants",
         body: {
           mappings: {
@@ -16,7 +16,7 @@ exports.createStream = async () => {
                 type: "keyword",
               },
               name: {
-                type: "keyword",
+                type: "text",
               },
               locations: {
                 type: "keyword",
@@ -25,6 +25,9 @@ exports.createStream = async () => {
                 type: "completion",
               },
               ratings: {
+                type: "long",
+              },
+              cost_for_two: {
                 type: "long",
               },
             },

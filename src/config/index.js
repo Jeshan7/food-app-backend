@@ -8,6 +8,7 @@ const restaurantRoutes = require("../routes/restaurantRoutes");
 const menuRoutes = require("../routes/menuRoutes");
 const foodItemsRoutes = require("../routes/foodItemRoutes");
 const orderRoutes = require("../routes/orderRoutes");
+const searchRoutes = require("../routes/searchRoutes");
 
 mongoose.connect("mongodb://localhost/app-db", { useNewUrlParser: true });
 
@@ -20,6 +21,7 @@ app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/fooditems", foodItemsRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/search", searchRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Route not Found");
