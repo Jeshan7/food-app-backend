@@ -6,7 +6,7 @@ router.post("/suggestions", SearchController.fetch_suggestions);
 
 router.post("/filter", SearchController.filter_restaurants);
 
-router.get("/", SearchController.fetch_restaurants);
+router.post("/", SearchController.fetch_restaurants);
 
 // router.get("/search", RestaurantController.search_restaurants);
 

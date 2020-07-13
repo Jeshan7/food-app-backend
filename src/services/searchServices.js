@@ -34,7 +34,7 @@ exports.query_suggestions = async (query) => {
       .filter((data) => {
         return data !== undefined;
       });
-    console.log("sas", result);
+
     return result;
   } catch (error) {
     console.log(error.meta.body);
@@ -53,20 +53,21 @@ exports.query_search = async (data) => {
           "locations",
           "ratings",
           "cost_for_two",
+          "description",
         ],
         query: {
           bool: {
             must: {
               match_phrase_prefix: {
                 name: {
-                  query: data,
+                  query: data.name,
                   // slop: 2,
                 },
               },
             },
             filter: {
               term: {
-                locations: "Mumbai",
+                locations: data.location,
               },
             },
           },
@@ -76,9 +77,9 @@ exports.query_search = async (data) => {
     const result = body.hits.hits.map((doc) => {
       return doc._source;
     });
+
     return result;
   } catch (error) {
-    // console.log(error.meta.body);
     throw new Error(error.message);
   }
 };
@@ -86,7 +87,6 @@ exports.query_search = async (data) => {
 exports.query_filter = async (query) => {
   console.log(query);
   try {
-    console.log(query);
     const { body } = await es.search({
       index: "restaurants",
       body: {

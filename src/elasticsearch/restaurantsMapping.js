@@ -18,6 +18,9 @@ exports.createStream = async () => {
               name: {
                 type: "text",
               },
+              description: {
+                type: "text",
+              },
               locations: {
                 type: "keyword",
               },

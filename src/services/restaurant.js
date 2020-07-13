@@ -24,6 +24,7 @@ exports.create = async (restaurant) => {
           search_name: {
             input: sugggestName,
           },
+          description: data.description,
           locations: data.locations,
           ratings: data.ratings,
           cost_for_two: data.cost_for_two,

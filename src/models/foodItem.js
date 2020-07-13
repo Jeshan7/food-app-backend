@@ -11,8 +11,12 @@ const menuSchema = new Schema({
     type: Number,
     default: 0,
   },
-  category: {
+  dish_type: {
     type: String,
+    required: true,
+  },
+  category: {
+    type: [String],
     require: true,
   },
   unit_price: {

@@ -18,8 +18,7 @@ exports.fetch_suggestions = async (req, res, next) => {
 
 exports.fetch_restaurants = async (req, res, next) => {
   try {
-    console.log(req.query);
-    const restaurants = await SearchService.query_search(req.query.q);
+    const restaurants = await SearchService.query_search(req.body);
     res.status(200).json({
       message: "fetched successfully",
       restaurants,
