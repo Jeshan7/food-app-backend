@@ -19,6 +19,7 @@ exports.fetch_all_menus = async (req, res, next) => {
                 category: doc.category,
                 menu_id: doc.menu_id,
                 unit_price: doc.unit_price,
+                dish_type: doc.dish_type
               };
             }),
           };

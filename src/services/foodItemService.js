@@ -19,6 +19,7 @@ exports.add = async (foodItem) => {
       unit_price: foodItem.unit_price,
       category: foodItem.category,
       menu_id: foodItem.menu_id,
+      dish_type: foodItem.dish_type,
     });
     const addedFoodItem = await newFoodItem.save();
     const menuItem = await Menu.findByIdAndUpdate(

@@ -15,6 +15,7 @@ exports.fetch_all_fooditems = async (req, res, next) => {
             category: doc.category,
             menu_id: doc.menu_id,
             unit_price: doc.unit_price,
+            dish_type: doc.dish_type,
           };
         }),
       });
@@ -42,6 +43,7 @@ exports.add_foodItem = async (req, res, next) => {
         category: foodItem.category,
         menu_id: foodItem.menu_id,
         unit_price: foodItem.unit_price,
+        dish_type: foodItem.dish_type,
       },
     });
   } catch (error) {
